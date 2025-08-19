@@ -8,7 +8,7 @@ from collections import OrderedDict
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'serviceAccountKey.json'
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
 
 with open('category_map.json', 'r') as f:
     category_map = json.load(f)
