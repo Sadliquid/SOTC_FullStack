@@ -1,5 +1,5 @@
 import os, tempfile, json
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from google.cloud import vision
 from PIL import Image
@@ -112,13 +112,9 @@ def fetch_labels(image_path):
     except Exception as e:
         return {'error': str(e)}
 
-@app.route('/', methods=['GET'])
-def getIndex():
-    return render_template('index.html')
-
-@app.route("/", methods=['POST'])
-def postIndex():
-    return '[POST] - API is ONLINE.'
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return 'Welcome to the SOTC_Backend Server!'
 
 @app.route('/getLabels', methods=['POST'])
 def get_labels():
@@ -136,7 +132,7 @@ def get_labels():
 
     for file in files:
         if file.filename == '':
-            continue  # Skip empty filenames
+            continue
 
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
             file.save(temp_file.name)
@@ -145,7 +141,6 @@ def get_labels():
 
         labels = fetch_labels(file_path)
 
-        # Skip the label if it's "error"
         if "error" in labels:
             error_files.append(file_name)
             continue
@@ -163,7 +158,6 @@ def get_labels():
         if new_labels:
             new_labels_list.append((file_name, new_labels))
 
-    # Append all labels to the text file with a line of spacing between entries
     with open("labels.txt", "a") as f:
         for file_name, new_labels in new_labels_list:
             f.write(f"New labels for {file_name}: {{ {', '.join(f'\"{label}\"' for label in new_labels)} }}\n\n")
