@@ -123,23 +123,23 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
 			)}
 
 			{preview && (
-				<Box position="relative" w="100%" mb={6}>
-					<MotionImage src={preview} alt="Preview" maxH="300px" borderRadius="xl" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} shadow="lg" mx="auto" />
-
+				<Box position="relative" w="fit-content" mx="auto" mb={6}>
+					<MotionImage src={preview} alt="Preview" maxH="300px" borderRadius="xl" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} shadow="lg" display="block" />
 					<MotionIconButton
 						icon={<CloseIcon />}
 						position="absolute"
 						top="10px"
 						right="10px"
 						borderRadius="full"
-						bg="black"
+						bg="rgba(0, 0, 0, 0.6)"
 						border="1px solid rgba(255, 255, 255, 0.3)"
 						color="white"
 						size="sm"
 						onClick={handleRemoveImage}
 						whileTap={{ scale: 0.95 }}
+                        _hover={{ bg: "rgba(0, 0, 0, 0.8)" }}
 						aria-label="Remove image"
-						zIndex={2}
+						zIndex={5}
 					/>
 				</Box>
 			)}

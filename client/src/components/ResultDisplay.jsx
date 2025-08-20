@@ -62,20 +62,14 @@ function ResultDisplay({ result }) {
           </Box>
         )}
 
-        {result['Received images'] !== undefined && (
+        {result.labelsAdded !== undefined && (
           <Box>
-            {result.category ? (
-              <>
-                <Text>New Labels Added: <Text as="span" color="green.300" fontWeight="bold">{result.labelsAdded || 0}</Text></Text>
-              </>
-            ) : (
-              <>
-                <Text>Received Images: {result['Received images']}</Text>
-                <Text>Successful Scans: {result['Successfull scans']}</Text>
-                <Text>Error Scans: {result['Error scans']?.join(', ') || 'None'}</Text>
-                <Text>Corrupted Files: {result['Corrupted files']}</Text>
-              </>
-            )}
+            <Text>
+              New Labels Added:{' '}
+              <Text as="span" color="green.300" fontWeight="bold">
+                {result.labelsAdded}
+              </Text>
+            </Text>
           </Box>
         )}
       </VStack>
