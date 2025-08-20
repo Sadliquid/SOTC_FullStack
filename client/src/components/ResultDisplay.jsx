@@ -1,12 +1,10 @@
-import { Box, VStack, Text, Wrap, WrapItem, Heading } from '@chakra-ui/react'
+import { Box, VStack, Text, Wrap, WrapItem } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
 
-// Create motion component outside of render
 const MotionBox = motion(Box);
 
 function ResultDisplay({ result }) {
-    // Memoize animation variants to prevent recreation
     const fadeIn = useMemo(() => ({
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -16,7 +14,7 @@ function ResultDisplay({ result }) {
 
     return (
         <MotionBox
-            key={`result-${JSON.stringify(result)}`} // Add key to prevent unnecessary animations
+            key={`result-${JSON.stringify(result)}`}
             mt={6}
             p={6}
             borderWidth={1}

@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Box, Button, VStack, Image, Text, IconButton, Input, FormControl, FormLabel, useToast, Tooltip, HStack, Flex } from "@chakra-ui/react";
 import { AttachmentIcon, CloseIcon } from "@chakra-ui/icons";
 
-// Create motion components outside of render to prevent recreation
 const MotionButton = motion(Button);
 const MotionImage = motion(Image);
 const MotionIconButton = motion(IconButton);
@@ -29,7 +28,6 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
 		}
 	}, [hasSelectedFile, onImageSelect]);
 
-    // Memoize the file change handler to prevent recreation
     const handleFileChange = useCallback((event) => {
         const files = event.target.files;
         if (files.length > 0) {
@@ -47,17 +45,14 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
 
             setHasSelectedFile(true);
 
-            // Generate previews
             const newPreviews = Array.from(files).map(file => URL.createObjectURL(file));
             setPreviews(newPreviews);
             setCurrentPreviewIndex(0);
 
-            // Clear previous results
             if (onUpload) onUpload(null);
         }
     }, [toast, onUpload]);
 
-    // Memoize the remove image handler
     const handleRemoveImage = useCallback((index) => {
         const dt = new DataTransfer();
         const files = fileInputRef.current.files;
@@ -80,7 +75,6 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
         }
     }, [previews, currentPreviewIndex, onUpload]);
 
-    // Memoize the upload handler
 	const handleUpload = useCallback(async () => {
 		const files = fileInputRef.current.files;
 		if (files.length === 0) {
@@ -96,12 +90,10 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
 		setIsLoading(true);
 		const formData = new FormData();
 
-		// Add all files to the form data
 		Array.from(files).forEach(file => {
 			formData.append(multiple ? "files" : "file", file);
 		});
 
-		// If we're on the labels page (multiple is true), add the category
 		if (multiple && endpoint === "/populate" && category) {
 			formData.append("category", category);
 		}
@@ -114,7 +106,6 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
 			const data = await response.json();
 			onUpload(data);
 
-			// Reset state after successful upload
 			setPreviews([]);
 			setHasSelectedFile(false);
 			fileInputRef.current.value = null;
@@ -131,22 +122,18 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
 		}
 	}, [multiple, endpoint, category, toast, onUpload]);
 
-    // Memoize category change handler
     const handleCategoryChange = useCallback((e) => {
         setCategory(e.target.value);
     }, []);
 
-    // Memoize file input click handler
     const handleFileInputClick = useCallback(() => {
         fileInputRef.current.click();
     }, []);
 
-    // Memoize preview index change handler
     const handlePreviewIndexChange = useCallback((index) => {
         setCurrentPreviewIndex(index);
     }, []);
 
-    // Memoize animation variants to prevent recreation
     const buttonVariants = useMemo(() => ({
         hover: { boxShadow: "0 0 12px rgba(255, 255, 255, 0.5)" },
         tap: { opacity: 0.8 }
@@ -210,7 +197,7 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
             {previews.length > 0 && (
                 <Box position="relative" w="fit-content" mx="auto" mb={6}>
                     <MotionImage
-                        key={`preview-${currentPreviewIndex}`} // Add key to prevent animation on every render
+                        key={`preview-${currentPreviewIndex}`}
                         src={previews[currentPreviewIndex]}
                         alt={`Preview ${currentPreviewIndex + 1}`}
                         maxH="300px"

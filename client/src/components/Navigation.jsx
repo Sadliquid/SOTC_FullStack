@@ -2,12 +2,10 @@ import { Flex, Box, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useMemo, useCallback } from 'react'
 
-// Create motion components outside of render
 const MotionFlex = motion(Flex);
 const MotionText = motion(Text);
 
 export default function Navigation({ onNavigate, currentPage }) {
-    // Memoize animation variants to prevent recreation
     const navVariants = useMemo(() => ({
         hidden: { y: -40, opacity: 0 },
         visible: { y: 0, opacity: 1, transition: { duration: 0.6, type: 'spring' } }
@@ -17,7 +15,6 @@ export default function Navigation({ onNavigate, currentPage }) {
         tap: { scale: 0.95 }
     }), []);
 
-    // Memoize navigation handlers
     const handleNavigateHome = useCallback(() => {
         onNavigate('home');
     }, [onNavigate]);

@@ -1,4 +1,3 @@
-// This file contains custom theme overrides for Chakra UI to create a modern, animated look.
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
@@ -33,7 +32,7 @@ const theme = extendTheme({
 		Button: {
 			baseStyle: {
 				fontWeight: "bold",
-				borderRadius: "full", // Make all buttons pill-shaped by default
+				borderRadius: "full",
 				transition: "all 0.2s"
 			},
 			variants: {
@@ -43,7 +42,6 @@ const theme = extendTheme({
 					_hover: {
 						bg: "red.600",
 						boxShadow: "0 0 12px rgba(255, 255, 255, 0.5)"
-						// Removed the transform: 'scale(1.05)' to eliminate the scaling effect
 					}
 				}
 			}
