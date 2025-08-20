@@ -53,7 +53,7 @@ export default function LabelsPage() {
         <FileUpload
           onUpload={setResult}
           multiple={true}
-          endpoint="/getLabels"
+          endpoint="/populate"
           onImageSelect={handleImageSelect}
         />
 

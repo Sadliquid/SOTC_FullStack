@@ -66,7 +66,7 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
     });
 
     // If we're on the labels page (multiple is true), add the category
-    if (multiple && endpoint === "/getLabels" && category) {
+    if (multiple && endpoint === "/populate" && category) {
       formData.append("category", category);
     }
 
@@ -110,7 +110,7 @@ export default function FileUpload({ onUpload, multiple = false, endpoint, onIma
         hidden
       />
 
-      {multiple && endpoint === "/getLabels" && (
+      {multiple && endpoint === "/populate" && (
         <FormControl>
           <FormLabel>Populate a category</FormLabel>
           <Input

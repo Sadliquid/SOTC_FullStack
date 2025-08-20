@@ -52,7 +52,7 @@ export default function HomePage() {
 
         <FileUpload
           onUpload={setResult}
-          endpoint="/upload"
+          endpoint="/analyse"
           onImageSelect={handleImageSelect}
         />
 
