@@ -8,7 +8,7 @@ from collections import OrderedDict
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'serviceAccountKey.json'
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 with open('category_map.json', 'r') as f:
     category_map = json.load(f)
@@ -222,4 +222,4 @@ def upload_image():
     return jsonify({'result': 'No', 'category': "No match", "items": detected_objects}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=8000)
