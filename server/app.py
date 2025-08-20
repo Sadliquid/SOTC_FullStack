@@ -8,7 +8,7 @@ from collections import OrderedDict
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'serviceAccountKey.json'
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 with open('category_map.json', 'r') as f:
     category_map = json.load(f)
@@ -116,7 +116,7 @@ def fetch_labels(image_path):
 def index():
     return 'Welcome to the SOTC_Backend Server!'
 
-@app.route('/getLabels', methods=['POST'])
+@app.route('/populate', methods=['POST'])
 def get_labels():
     if 'files' not in request.files or len(request.files.getlist('files')) == 0:
         return jsonify({'error': 'No files uploaded'}), 400
@@ -124,11 +124,14 @@ def get_labels():
     all_labels = []
     new_labels_list = []
 
+    category = request.form.get('category')
+
     files = request.files.getlist('files')
 
     total_files = len(files)
     successfull_files = 0
     error_files = []
+    total_new_labels = 0
 
     for file in files:
         if file.filename == '':
@@ -141,37 +144,52 @@ def get_labels():
 
         labels = fetch_labels(file_path)
 
-        if "error" in labels:
+        if isinstance(labels, dict) and "error" in labels:
             error_files.append(file_name)
             continue
 
         new_labels = []
 
-        for label in labels:
-            found = any(label in values for values in category_map.values())
-            if not found:
-                new_labels.append(label)
+        if category:
+            if category not in category_map:
+                category_map[category] = []
+
+            for label in labels:
+                if label not in category_map[category]:
+                    new_labels.append(label)
+                    if label not in category_map[category]:
+                        category_map[category].append(label)
+        else:
+            for label in labels:
+                found = any(label in values for values in category_map.values())
+                if not found:
+                    new_labels.append(label)
 
         all_labels.append(labels)
         successfull_files += 1
+        total_new_labels += len(new_labels)
 
         if new_labels:
             new_labels_list.append((file_name, new_labels))
+
+    if category and total_new_labels > 0:
+        with open('category_map.json', 'w') as f:
+            json.dump(category_map, f, indent=4)
 
     with open("labels.txt", "a") as f:
         for file_name, new_labels in new_labels_list:
             f.write(f"New labels for {file_name}: {{ {', '.join(f'\"{label}\"' for label in new_labels)} }}\n\n")
 
-    response_data = OrderedDict([
-        ('Received images', total_files),
-        ('Successfull scans', successfull_files),
-        ('Error scans', error_files),
-        ('Corrupted files', len(error_files)),
-    ])
+
+    if category:
+        response_data = {
+            "category": category,
+            "labelsAdded": total_new_labels,
+        }
 
     return jsonify(response_data), 200
 
-@app.route('/upload', methods=['POST'])
+@app.route('/analyse', methods=['POST'])
 def upload_image():
     if 'file' not in request.files or request.files['file'].filename == '':
         return jsonify({'error': 'No file uploaded'}), 400
