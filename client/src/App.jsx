@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import Navigation from './components/Navigation'
 import HomePage from './pages/HomePage'
 import LabelsPage from './pages/LabelsPage'
@@ -17,11 +17,23 @@ function App() {
   };
 
   return (
-    <Box minH="100vh" bg="gray.900">
+    <Box
+      minH="100vh"
+      bg="black"
+      backgroundImage="linear-gradient(to bottom, black, #111)"
+      color="white"
+    >
       <Navigation onNavigate={setCurrentPage} currentPage={currentPage} />
-      <Box p={[4, 8]} maxW="container.xl" mx="auto">
+      <Flex
+        justify="center"
+        align="center"
+        minH="calc(90vh - 120px)"
+        p={[4, 8]}
+        maxW="container.xl"
+        mx="auto"
+      >
         {renderPage()}
-      </Box>
+      </Flex>
     </Box>
   );
 }

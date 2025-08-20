@@ -81,7 +81,7 @@ export default function FileUpload({ onUpload, multiple = false, endpoint }) {
         size="lg"
         whileHover={{ boxShadow: '0 0 12px #38b2ac' }}
         whileTap={{ scale: 0.96 }}
-        borderRadius="xl"
+        borderRadius="full"
         shadow="md"
       >
         Select Image{multiple && 's'}
@@ -109,7 +109,7 @@ export default function FileUpload({ onUpload, multiple = false, endpoint }) {
         size="lg"
         whileHover={{ boxShadow: '0 0 12px #4299e1' }}
         whileTap={{ scale: 0.96 }}
-        borderRadius="xl"
+        borderRadius="full"
         shadow="md"
       >
         Analyze Image{multiple && 's'}

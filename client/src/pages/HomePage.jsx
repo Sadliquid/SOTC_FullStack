@@ -18,7 +18,7 @@ export default function HomePage() {
       <VStack spacing={10} w="100%">
         <MotionHeading
           textAlign="center"
-          color="teal.300"
+          color="white"
           size="2xl"
           initial="hidden"
           animate="visible"
@@ -31,7 +31,7 @@ export default function HomePage() {
 
         <MotionText
           textAlign="center"
-          color="gray.400"
+          color="white"
           fontSize="xl"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
