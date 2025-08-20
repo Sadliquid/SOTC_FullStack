@@ -10,8 +10,8 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'serviceAccountKey.json'
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
-with open('category_map.json', 'r') as f:
-    category_map = json.load(f)
+with open('config.json', 'r') as f:
+    config = json.load(f)
 
 def optimize_image(image_path, max_size=(800, 800)):
     with Image.open(image_path) as img:
@@ -42,7 +42,7 @@ def get_detected_objects(image_path):
 
 def get_recyclable_categories(detected_objects):
     matching_categories = set()
-    for category, terms in category_map.items():
+    for category, terms in config.items():
         if any(obj in terms for obj in detected_objects):
             matching_categories.add(category)
     return list(matching_categories) if matching_categories else None
@@ -50,7 +50,7 @@ def get_recyclable_categories(detected_objects):
 def get_best_fitting_category(file_name, image_path, detected_objects, matched_categories):
     category_match_count = {category: 0 for category in matched_categories}
     for category in matched_categories:
-        terms = category_map.get(category, [])
+        terms = config.get(category, [])
         category_match_count[category] = sum(1 for obj in detected_objects if obj in terms)
 
     best_category = max(category_match_count, key=category_match_count.get)
@@ -79,7 +79,7 @@ def granular_analysis_to_resolve_tie(file_name, image_path, tied_categories):
 
         label_match_count = {category: 0 for category in tied_categories}
         for category in tied_categories:
-            terms = category_map.get(category, [])
+            terms = config.get(category, [])
             label_match_count[category] = sum(1 for label in labels if label in terms)
 
         with open("logs.txt", "a") as f:
@@ -151,17 +151,17 @@ def get_labels():
         new_labels = []
 
         if category:
-            if category not in category_map:
-                category_map[category] = []
+            if category not in config:
+                config[category] = []
 
             for label in labels:
-                if label not in category_map[category]:
+                if label not in config[category]:
                     new_labels.append(label)
-                    if label not in category_map[category]:
-                        category_map[category].append(label)
+                    if label not in config[category]:
+                        config[category].append(label)
         else:
             for label in labels:
-                found = any(label in values for values in category_map.values())
+                found = any(label in values for values in config.values())
                 if not found:
                     new_labels.append(label)
 
@@ -173,8 +173,8 @@ def get_labels():
             new_labels_list.append((file_name, new_labels))
 
     if category and total_new_labels > 0:
-        with open('category_map.json', 'w') as f:
-            json.dump(category_map, f, indent=4)
+        with open('config.json', 'w') as f:
+            json.dump(config, f, indent=4)
 
     with open("labels.txt", "a") as f:
         for file_name, new_labels in new_labels_list:
