@@ -23,6 +23,8 @@ client/*.sw?
 # server
 /server/category_map.json
 /server/serviceAccountKey.json
+/server/labels.txt
+/server/logs.txt
 
 # global
 .DS_Store
