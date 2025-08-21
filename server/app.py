@@ -62,7 +62,7 @@ def get_best_fitting_category(file_name, image_path, detected_objects, matched_c
 
     return best_category
 
-def granular_analysis_to_resolve_tie(file_name, image_path, tied_categories):
+def granular_analysis_to_resolve_tie(image_path, tied_categories):
     client = vision.ImageAnnotatorClient()
 
     try:
@@ -80,11 +80,6 @@ def granular_analysis_to_resolve_tie(file_name, image_path, tied_categories):
         for category in tied_categories:
             terms = config.get(category, [])
             label_match_count[category] = sum(1 for label in labels if label in terms)
-
-        with open("logs.txt", "a") as f:
-            f.write(f"Detected labels for {file_name}: {{ {', '.join(f'\"{label}\"' for label in labels)} }}\n")
-            f.write(f"Label match count for {file_name}: {label_match_count}\n")
-            f.write("\n")
 
         best_category = max(label_match_count, key=label_match_count.get)
         return best_category if label_match_count[best_category] > 0 else None
