@@ -8,14 +8,21 @@ By the end of this session, you will have a fully functional web application tha
 - You must have Node.js and npm installed on your machine. Head to https://nodejs.org/en/download/.
 
 ## Setup
-1. Copy your `config.json` file from your Jupyter Notebook over to `/server` directory.
+1. Copy your `config.json` file from your Jupyter Notebook over to the `/server` directory.
 
-2. Navigate to the `server` directory and run the server on port `8000`.
+2. Open `app.py` and setup CORS to allow requests from port `5173`.
 
-3. Open `app.py` and setup CORS to allow requests from port `5173`.
+3. Open `networking.js` and add a `baseURL`.
 
-4. Navigate to the `client` directory and install npm packages.
+4. Navigate to the `server` directory and create a virtual environment.
 
-5. Open `networking.js` and ensure the backend URL is correct.
+    - Run `python -m venv venv` or `python3 -m venv venv` to create a virtual environment.
+    - Activate the virtual environment:
+      - On macOS/Linux: `source venv/bin/activate`
+      - On Windows: `venv\Scripts\activate`
+    - Install the required packages by running `pip install -r requirements.txt`.
+    - Run the Flask server on port `8000` using `python app.py` or `python3 app.py`.
 
-6. Run the frontend server on port `5173`.
+5. Navigate to the `client` directory and install npm packages with `npm install`.
+
+6. Run the frontend server on port `5173` with `npm run dev`.
