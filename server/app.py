@@ -127,7 +127,6 @@ def get_labels():
 
     files = request.files.getlist('files')
 
-    total_files = len(files)
     successfull_files = 0
     error_files = []
     total_new_labels = 0
