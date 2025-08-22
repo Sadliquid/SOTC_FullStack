@@ -46,7 +46,7 @@ def get_recyclable_categories(detected_objects):
             matching_categories.add(category)
     return list(matching_categories) if matching_categories else None
 
-def get_best_fitting_category(file_name, image_path, detected_objects, matched_categories):
+def get_best_fitting_category(image_path, detected_objects, matched_categories):
     category_match_count = {category: 0 for category in matched_categories}
     for category in matched_categories:
         terms = config.get(category, [])
@@ -191,7 +191,6 @@ def upload_image():
     with tempfile.NamedTemporaryFile(delete=False) as temp_file:
         file.save(temp_file.name)
         file_path = temp_file.name
-        file_name = file.filename
 
     optimized_image_path = optimize_image(file_path)
 
@@ -208,7 +207,7 @@ def upload_image():
     recyclable_categories = get_recyclable_categories(detected_objects)
 
     if recyclable_categories:
-        best_category = get_best_fitting_category(file_name, file_path, detected_objects, recyclable_categories)
+        best_category = get_best_fitting_category(file_path, detected_objects, recyclable_categories)
         if best_category:
             return jsonify({'result': 'Yes', 'category': best_category, "items": detected_objects}), 200
 
