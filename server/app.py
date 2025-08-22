@@ -58,7 +58,7 @@ def get_best_fitting_category(file_name, image_path, detected_objects, matched_c
     tied_categories = [cat for cat, count in category_match_count.items() if count == highest_count]
 
     if len(tied_categories) > 1:
-        return granular_analysis_to_resolve_tie(file_name, image_path, tied_categories)
+        return granular_analysis_to_resolve_tie(image_path, tied_categories)
 
     return best_category
 
